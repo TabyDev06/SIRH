@@ -14,8 +14,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
 <body>
     <h1>Empleados</h1>
 
-    <a href="../public/index.php?controller=Auth&action=logout">Cerrar sesión</a> | 
+    <a href="../public/index.php?controller=Auth&action=logout">Cerrar sesión</a>
     <a href="../public/index.php?controller=Empleado&action=crear">Crear nuevo empleado</a>
+    <a href="../public/index.php?controller=Contrato&action=index">Gestión de Contratos</a>
+    <a href="../public/index.php?controller=Departamento&action=index">Gestión de Departamentos</a>
 
     <table border="1" cellpadding="5" cellspacing="0" style="margin-top:10px;">
         <thead>
