@@ -20,15 +20,6 @@ class Empleado
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function obtenerPorId($id)
-    {
-        $sql = "SELECT * FROM empleado WHERE id = :id";
-        $stmt = $this->conexion->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
     public function crear($nombre, $apellido, $fecha_nacimiento, $edad, $foto, $departamento_id)
     {
         $sql = "INSERT INTO empleado (nombre, apellido, fecha_nacimiento, edad, foto, departamento_id) 
@@ -67,5 +58,19 @@ class Empleado
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
     }
+    
+    public function obtenerPorId($id)
+    {
+        $sql = "SELECT e.*, d.nombre AS departamento_nombre
+                FROM empleado e
+                LEFT JOIN departamento d ON e.departamento_id = d.id
+                WHERE e.id = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
 }
 ?>

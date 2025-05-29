@@ -13,12 +13,12 @@ class DepartamentoController
     public function index()
     {
         $departamentos = $this->model->obtenerTodos();
-        require_once __DIR__ . '/../views/departamentos/index.php';
+        require_once __DIR__ . '/../views/admin/departamentos/index.php';
     }
 
     public function crear()
     {
-        require_once __DIR__ . '/../views/departamentos/crear.php';
+        require_once __DIR__ . '/../views/admin/departamentos/crear.php';
     }
 
     public function guardar()
@@ -51,7 +51,7 @@ class DepartamentoController
     {
         $id = $_GET['id'];
         $departamento = $this->model->obtenerPorId($id);
-        require_once __DIR__ . '/../views/departamentos/editar.php';
+        require_once __DIR__ . '/../views/admin/departamentos/editar.php';
     }
 
     public function actualizar()

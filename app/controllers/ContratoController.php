@@ -16,13 +16,13 @@ class ContratoController
     public function index()
     {
         $contratos = $this->contratoModel->obtenerTodos();
-        require_once __DIR__ . '/../views/contratos/index.php';
+        require_once __DIR__ . '/../views/admin/contratos/index.php';
     }
 
     public function crear()
     {
         $empleados = $this->empleadoModel->obtenerTodos();
-        require_once __DIR__ . '/../views/contratos/crear.php';
+        require_once __DIR__ . '/../views/admin/contratos/crear.php';
     }
 
     public function guardar()
@@ -48,7 +48,7 @@ class ContratoController
         if ($id) {
             $contrato = $this->contratoModel->obtenerPorId($id);
             $empleados = $this->empleadoModel->obtenerTodos();
-            require_once __DIR__ . '/../views/contratos/editar.php';
+            require_once __DIR__ . '/../views/admin/contratos/editar.php';
         } else {
             header('Location: ../public/index.php?controller=Contrato&action=index');
             exit;

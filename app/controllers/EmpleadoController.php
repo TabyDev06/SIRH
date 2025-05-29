@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/Empleado.php';
-require_once __DIR__ . '/../models/Departamento.php'; // <-- Agregado aquí
+require_once __DIR__ . '/../models/Departamento.php';
 
 class EmpleadoController
 {
@@ -9,6 +9,24 @@ class EmpleadoController
     public function __construct()
     {
         $this->empleadoModel = new Empleado();
+    }
+
+    public function perfil()
+    {
+        if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Empleado') {
+            header('Location: ../public/index.php?controller=Auth&action=login_form');
+            exit;
+        }
+
+        $id = $_SESSION['user_id'];
+
+        $empleado = $this->empleadoModel->obtenerPorId($id);
+
+        if (!$empleado) {
+            die('Empleado no encontrado.');
+        }
+
+        require_once __DIR__ . '/../views/empleados/perfil.php';
     }
 
     private function verificarAdmin()
@@ -24,7 +42,7 @@ class EmpleadoController
         $this->verificarAdmin();
 
         $empleados = $this->empleadoModel->obtenerTodos();
-        require_once __DIR__ . '/../views/empleados/index.php';
+        require_once __DIR__ . '/../views/admin/empleados/index.php';
     }
 
     public function crear()
@@ -34,7 +52,7 @@ class EmpleadoController
         $departamentoModel = new Departamento();
         $departamentos = $departamentoModel->obtenerTodos();
 
-        require_once __DIR__ . '/../views/empleados/crear.php';
+        require_once __DIR__ . '/../views/admin/empleados/crear.php';
     }
 
     public function guardar()
@@ -99,7 +117,7 @@ class EmpleadoController
         $departamentoModel = new Departamento();
         $departamentos = $departamentoModel->obtenerTodos();
 
-        require_once __DIR__ . '/../views/empleados/editar.php';
+        require_once __DIR__ . '/../views/admin/empleados/editar.php';
     }
 
     public function actualizar()
