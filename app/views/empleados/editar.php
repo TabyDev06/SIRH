@@ -13,11 +13,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
 </head>
 <body>
     <h1>Editar empleado</h1>
+
     <?php if (!empty($error)): ?>
         <p style="color:red;"><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
+
     <form action="../public/index.php?controller=Empleado&action=actualizar" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<?= htmlspecialchars($empleado['id']) ?>">
+
         <label>Nombre:</label><br>
         <input type="text" name="nombre" required value="<?= htmlspecialchars($empleado['nombre']) ?>"><br><br>
 
@@ -27,11 +30,18 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
         <label>Fecha de nacimiento:</label><br>
         <input type="date" name="fecha_nacimiento" required value="<?= htmlspecialchars($empleado['fecha_nacimiento']) ?>"><br><br>
 
-        <label>Departamento ID:</label><br>
-        <input type="number" name="departamento_id" required value="<?= htmlspecialchars($empleado['departamento_id']) ?>"><br><br>
+        <label>Departamento:</label><br>
+        <select name="departamento_id" required>
+            <option value="">-- Seleccione un departamento --</option>
+            <?php foreach ($departamentos as $dep): ?>
+                <option value="<?= $dep['id'] ?>" <?= ($empleado['departamento_id'] == $dep['id']) ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($dep['nombre']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select><br><br>
 
         <label>Foto actual:</label><br>
-        <?php if ($empleado['foto']): ?>
+        <?php if (!empty($empleado['foto'])): ?>
             <img src="../public/<?= htmlspecialchars($empleado['foto']) ?>" alt="Foto" width="100"><br><br>
         <?php else: ?>
             No hay foto<br><br>

@@ -23,11 +23,28 @@ class DepartamentoController
 
     public function guardar()
     {
-        $nombre = $_POST['nombre'] ?? '';
-        if (!empty($nombre)) {
-            $this->model->crear($nombre);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nombre = $_POST['nombre'] ?? '';
+            $ubicacion = $_POST['ubicacion'] ?? '';
+
+            if ($nombre && $ubicacion) {
+                $guardado = $this->model->crear($nombre, $ubicacion);  // Cambiado aquí
+
+                if ($guardado) {
+                    header('Location: index.php?controller=Departamento&action=index&msg=guardado');
+                    exit;
+                } else {
+                    $error = "Error al guardar el departamento.";
+                    require_once __DIR__ . '/../views/departamento/crear.php';
+                }
+            } else {
+                $error = "Complete todos los campos.";
+                require_once __DIR__ . '/../views/departamento/crear.php';
+            }
+        } else {
+            header('Location: index.php?controller=Departamento&action=index');
+            exit;
         }
-        header("Location: index.php?controller=Departamento&action=index");
     }
 
     public function editar()

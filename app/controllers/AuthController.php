@@ -11,6 +11,10 @@ class AuthController
 
     public function __construct()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $this->usuarioModel = new Usuario();
         error_log("AuthController inicializado");
     }
@@ -33,7 +37,7 @@ class AuthController
 
             error_log("Datos recibidos - Correo: $correo");
 
-            if ($correo && $contrasena) {
+            if (filter_var($correo, FILTER_VALIDATE_EMAIL) && $contrasena) {
                 $user = $this->usuarioModel->obtenerPorCorreo($correo);
                 error_log("Usuario obtenido: " . json_encode($user));
 
@@ -47,8 +51,7 @@ class AuthController
                     error_log("Rol del usuario: " . $user['rol']);
 
                     if ($user['rol'] === 'Administrador') {
-                        error_log("Redirigiendo a vista de Empleado");
-                        header('Location: ../public/index.php?controller=Empleado&action=index');
+                        header('Location: index.php?controller=Auth&action=dashboard');
                     } else {
                         error_log("Redirigiendo a Dashboard");
                         header('Location: ../public/index.php?controller=Dashboard&action=index');
@@ -60,8 +63,8 @@ class AuthController
                     require_once __DIR__ . '/../views/login.php';
                 }
             } else {
-                error_log("Campos incompletos");
-                $error = "Complete todos los campos.";
+                error_log("Campos incompletos o correo inválido");
+                $error = "Complete todos los campos correctamente.";
                 require_once __DIR__ . '/../views/login.php';
             }
         } else {
@@ -77,5 +80,10 @@ class AuthController
         session_destroy();
         header('Location: ../public/index.php');
         exit;
+    }
+
+    public function dashboard()
+    {
+        require_once __DIR__ . '/../views/admin/dashboard.php';
     }
 }

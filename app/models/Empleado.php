@@ -3,24 +3,28 @@ require_once __DIR__ . '/../../config/Database.php';
 
 class Empleado
 {
-    private $db;
+    private $conexion;
 
     public function __construct()
     {
-        $this->db = Database::conectar();
+        $this->conexion = Database::conectar();
     }
 
     public function obtenerTodos()
     {
-        $stmt = $this->db->prepare("SELECT * FROM empleado");
+        $sql = "SELECT e.*, d.nombre AS departamento_nombre
+                FROM empleado e
+                LEFT JOIN departamento d ON e.departamento_id = d.id";
+        $stmt = $this->conexion->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function obtenerPorId($id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM empleado WHERE id = :id LIMIT 1");
-        $stmt->bindParam(':id', $id);
+        $sql = "SELECT * FROM empleado WHERE id = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -29,8 +33,8 @@ class Empleado
     {
         $sql = "INSERT INTO empleado (nombre, apellido, fecha_nacimiento, edad, foto, departamento_id) 
                 VALUES (:nombre, :apellido, :fecha_nacimiento, :edad, :foto, :departamento_id)";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute([
             ':nombre' => $nombre,
             ':apellido' => $apellido,
             ':fecha_nacimiento' => $fecha_nacimiento,
@@ -40,24 +44,28 @@ class Empleado
         ]);
     }
 
-
     public function actualizar($id, $nombre, $apellido, $fecha_nacimiento, $edad, $foto, $departamento_id)
     {
-        $stmt = $this->db->prepare("UPDATE empleado SET nombre = :nombre, apellido = :apellido, fecha_nacimiento = :fecha_nacimiento, edad = :edad, foto = :foto, departamento_id = :departamento_id WHERE id = :id");
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':apellido', $apellido);
-        $stmt->bindParam(':fecha_nacimiento', $fecha_nacimiento);
-        $stmt->bindParam(':edad', $edad);
-        $stmt->bindParam(':foto', $foto);
-        $stmt->bindParam(':departamento_id', $departamento_id);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        $sql = "UPDATE empleado SET nombre = :nombre, apellido = :apellido, fecha_nacimiento = :fecha_nacimiento, 
+                edad = :edad, foto = :foto, departamento_id = :departamento_id WHERE id = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute([
+            ':id' => $id,
+            ':nombre' => $nombre,
+            ':apellido' => $apellido,
+            ':fecha_nacimiento' => $fecha_nacimiento,
+            ':edad' => $edad,
+            ':foto' => $foto,
+            ':departamento_id' => $departamento_id
+        ]);
     }
 
     public function eliminar($id)
     {
-        $stmt = $this->db->prepare("DELETE FROM empleado WHERE id = :id");
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        $sql = "DELETE FROM empleado WHERE id = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
     }
 }
+?>

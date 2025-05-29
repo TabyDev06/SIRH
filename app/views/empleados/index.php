@@ -27,6 +27,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
                 <th>Apellido</th>
                 <th>Fecha Nacimiento</th>
                 <th>Edad</th>
+                <th>Departamento</th>
                 <th>Foto</th>
                 <th>Acciones</th>
             </tr>
@@ -39,6 +40,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
                 <td><?= htmlspecialchars($empleado['apellido']) ?></td>
                 <td><?= htmlspecialchars($empleado['fecha_nacimiento']) ?></td>
                 <td><?= htmlspecialchars($empleado['edad']) ?></td>
+                <td><?= htmlspecialchars($empleado['departamento_nombre'] ?? 'Sin departamento') ?></td>
                 <td>
                     <?php if (!empty($empleado['foto'])): ?>
                         <img src="../public/<?= htmlspecialchars($empleado['foto']) ?>" alt="Foto" width="50" />

@@ -13,9 +13,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
 </head>
 <body>
     <h1>Crear nuevo empleado</h1>
+
     <?php if (!empty($error)): ?>
         <p style="color:red;"><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
+
     <form action="../public/index.php?controller=Empleado&action=guardar" method="POST" enctype="multipart/form-data">
         <label>Nombre:</label><br>
         <input type="text" name="nombre" required><br><br>
@@ -26,13 +28,22 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
         <label>Fecha de nacimiento:</label><br>
         <input type="date" name="fecha_nacimiento" required><br><br>
 
-        <label>Departamento ID:</label><br>
-        <input type="number" name="departamento_id" required><br><br>
+        <label>Departamento:</label><br>
+        <select name="departamento_id" required>
+            <option value="">-- Seleccione un departamento --</option>
+            <?php foreach ($departamentos as $dep): ?>
+                <option value="<?= $dep['id'] ?>">
+                    <?= htmlspecialchars($dep['nombre']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select><br><br>
 
         <label>Foto:</label><br>
-        <input type="file" name="foto" accept="image/jpeg,image/png" />
+        <input type="file" name="foto" accept="image/jpeg,image/png"><br><br>
 
         <button type="submit">Guardar</button>
     </form>
     <br>
-    <a href="../public/index.php?controller=Empleado&action
+    <a href="../public/index.php?controller=Empleado&action=index">Volver al listado</a>
+</body>
+</html>
