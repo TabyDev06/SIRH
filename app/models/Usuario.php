@@ -7,6 +7,7 @@ class Usuario
 
     public function __construct()
     {
+        // Asumiendo que Database::conectar() retorna una instancia PDO
         $this->db = Database::conectar();
     }
 
@@ -17,4 +18,24 @@ class Usuario
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+public function crear($id, $correo, $contrasena, $rol)
+{
+    // Verificar si ya existe el correo
+    $existe = $this->obtenerPorCorreo($correo);
+    if ($existe) {
+        // Retornamos false o puedes lanzar excepción o manejar el error como prefieras
+        return false;
+    }
+
+    $sql = "INSERT INTO usuario (id, correo, contrasena, rol) VALUES (:id, :correo, :contrasena, :rol)";
+    $stmt = $this->db->prepare($sql);
+    return $stmt->execute([
+        ':id' => $id,
+        ':correo' => $correo,
+        ':contrasena' => $contrasena,
+        ':rol' => $rol,
+    ]);
+}
+
 }

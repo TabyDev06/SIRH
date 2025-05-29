@@ -22,9 +22,5 @@
     <input type="number" step="0.01" name="salario_base" required>
     <br>
 
-    <label>Departamento:</label>
-    <input type="text" name="departamento" required>
-    <br>
-
     <button type="submit">Guardar</button>
 </form>

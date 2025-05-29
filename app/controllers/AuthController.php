@@ -19,7 +19,7 @@ class AuthController
         error_log("AuthController inicializado");
     }
 
-    public function login_form()
+    public function login_form($error = null)
     {
         error_log("Mostrando formulario de login");
         require_once __DIR__ . '/../views/login.php';
@@ -52,20 +52,24 @@ class AuthController
 
                     if ($user['rol'] === 'Administrador') {
                         header('Location: index.php?controller=Auth&action=dashboard');
+                        exit;
+                    } elseif ($user['rol'] === 'Empleado') {
+                        header('Location: index.php?controller=Empleado&action=listaParaEmpleado');
+                        exit;
                     } else {
-                        error_log("Redirigiendo a Dashboard");
-                        header('Location: ../public/index.php?controller=Dashboard&action=index');
+                        error_log("Rol no reconocido");
+                        $error = "Rol de usuario no válido.";
+                        $this->login_form($error);
                     }
-                    exit;
                 } else {
                     error_log("Correo o contraseña incorrectos");
                     $error = "Correo o contraseña incorrectos.";
-                    require_once __DIR__ . '/../views/login.php';
+                    $this->login_form($error);
                 }
             } else {
                 error_log("Campos incompletos o correo inválido");
                 $error = "Complete todos los campos correctamente.";
-                require_once __DIR__ . '/../views/login.php';
+                $this->login_form($error);
             }
         } else {
             error_log("No es método POST. Redirigiendo al index.");

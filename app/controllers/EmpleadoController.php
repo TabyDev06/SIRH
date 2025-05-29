@@ -64,13 +64,25 @@ class EmpleadoController
             $apellido = $_POST['apellido'] ?? '';
             $fecha_nacimiento = $_POST['fecha_nacimiento'] ?? '';
             $departamento_id = $_POST['departamento_id'] ?? null;
+            $correo = $_POST['correo'] ?? '';
+            $contrasena = $_POST['contrasena'] ?? '';
+            $rol = $_POST['rol'] ?? '';
 
-            if (!$nombre || !$apellido || !$fecha_nacimiento || !$departamento_id) {
+            // Validar campos obligatorios
+            if (!$nombre || !$apellido || !$fecha_nacimiento || !$departamento_id || !$correo || !$contrasena || !$rol) {
                 $error = "Complete todos los campos obligatorios.";
-                // Para que el select no falle, carga departamentos antes de la vista
                 $departamentoModel = new Departamento();
                 $departamentos = $departamentoModel->obtenerTodos();
-                require_once __DIR__ . '/../views/empleados/crear.php';
+                require_once __DIR__ . '/../views/admin/empleados/crear.php';
+                return;
+            }
+
+            // Validar correo
+            if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+                $error = "Correo inválido.";
+                $departamentoModel = new Departamento();
+                $departamentos = $departamentoModel->obtenerTodos();
+                require_once __DIR__ . '/../views/admin/empleados/crear.php';
                 return;
             }
 
@@ -83,12 +95,35 @@ class EmpleadoController
                     $error = "Error al subir la foto.";
                     $departamentoModel = new Departamento();
                     $departamentos = $departamentoModel->obtenerTodos();
-                    require_once __DIR__ . '/../views/empleados/crear.php';
+                    require_once __DIR__ . '/../views/admin/empleados/crear.php';
                     return;
                 }
             }
 
+            // Insertar empleado y obtener último ID insertado
             $this->empleadoModel->crear($nombre, $apellido, $fecha_nacimiento, $edad, $foto, $departamento_id);
+            $empleadoId = $this->empleadoModel->getUltimoIdInsertado();
+
+            // Insertar usuario con validación de correo duplicado
+            require_once __DIR__ . '/../models/Usuario.php';
+            $usuarioModel = new Usuario();
+
+            $hashContrasena = password_hash($contrasena, PASSWORD_DEFAULT);
+
+            $resultadoUsuario = $usuarioModel->crear($empleadoId, $correo, $hashContrasena, $rol);
+
+            if (!$resultadoUsuario) {
+                // Si el correo ya existe, eliminar el empleado creado para no quedar inconsistente
+                $this->empleadoModel->eliminar($empleadoId);
+
+                $error = "El correo electrónico ya está registrado.";
+                $departamentoModel = new Departamento();
+                $departamentos = $departamentoModel->obtenerTodos();
+
+                // Mostrar formulario con error
+                require_once __DIR__ . '/../views/admin/empleados/crear.php';
+                return;
+            }
 
             header('Location: ../public/index.php?controller=Empleado&action=index');
             exit;
@@ -217,5 +252,34 @@ class EmpleadoController
             return false;
         }
     }
-    
+
+    public function ver()
+    {
+        if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Empleado') {
+            header('Location: ../public/index.php?controller=Auth&action=login_form');
+            exit;
+        }
+
+        $id = $_SESSION['user_id'];
+        $empleado = $this->empleadoModel->obtenerPorId($id);
+
+        if (!$empleado) {
+            die('Empleado no encontrado.');
+        }
+
+        require_once __DIR__ . '/../views/empleado/perfil.php';
+    }
+
+    public function listaParaEmpleado()
+{
+    if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Empleado') {
+        header('Location: ../public/index.php?controller=Auth&action=login_form');
+        exit;
+    }
+
+    $empleados = $this->empleadoModel->obtenerTodos();
+    require_once __DIR__ . '/../views/empleado/index.php';
+}
+
+
 }

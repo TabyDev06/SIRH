@@ -71,6 +71,10 @@ class Empleado
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getUltimoIdInsertado()
+        {
+            return $this->conexion->lastInsertId();
+        }
 
 }
 ?>

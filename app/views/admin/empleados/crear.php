@@ -9,10 +9,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <title>Crear Empleado</title>
+    <title>Crear Usuario</title>
 </head>
 <body>
-    <h1>Crear nuevo empleado</h1>
+    <h1>Crear Usuario</h1>
 
     <?php if (!empty($error)): ?>
         <p style="color:red;"><?= htmlspecialchars($error) ?></p>
@@ -40,6 +40,19 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
 
         <label>Foto:</label><br>
         <input type="file" name="foto" accept="image/jpeg,image/png"><br><br>
+
+        <label>Correo electrónico:</label><br>
+        <input type="email" name="correo" required><br><br>
+
+        <label>Contraseña:</label><br>
+        <input type="password" name="contrasena" required><br><br>
+
+        <label>Rol:</label><br>
+        <select name="rol" required>
+            <option value="">-- Seleccione un rol --</option>
+            <option value="Empleado">Empleado</option>
+            <option value="Administrador">Administrador</option>
+        </select><br><br>
 
         <button type="submit">Guardar</button>
     </form>
