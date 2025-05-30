@@ -1,0 +1,84 @@
+body.dark-body {
+    background-color: #121212;
+    color: #f0f0f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 30px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+a.btn-dark {
+    display: inline-block;
+    background-color: #1f1f1f;
+    color: #ddd;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+a.btn-dark:hover {
+    background-color: #444444;
+    color: #fff;
+}
+
+table.dark-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1f1f1f;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+table.dark-table th,
+table.dark-table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+table.dark-table th {
+    background-color: #2c2c2c;
+    color: #ffffff;
+    border-bottom: 2px solid #444;
+}
+
+table.dark-table td {
+    border-bottom: 1px solid #333;
+}
+
+table.dark-table tr:hover {
+    background-color: #2a2a2a;
+}
+
+.action-link {
+    color: #aaaaff;
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 15px;
+    transition: color 0.3s;
+}
+
+.action-link:hover {
+    color: #ccccff;
+}
+
+.action-link.danger {
+    color: #ff6666;
+}
+
+.action-link.danger:hover {
+    color: #ff9999;
+}

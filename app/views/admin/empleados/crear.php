@@ -10,25 +10,28 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
 <head>
     <meta charset="UTF-8" />
     <title>Crear Usuario</title>
+    <link rel="stylesheet" href="../public/css/admin/empleados/crear.css">
 </head>
-<body>
-    <h1>Crear Usuario</h1>
+<body class="dark-body">
+
+<div class="form-container dark-card">
+    <h1 class="form-title">Crear Usuario</h1>
 
     <?php if (!empty($error)): ?>
-        <p style="color:red;"><?= htmlspecialchars($error) ?></p>
+        <p class="error"><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
 
     <form action="../public/index.php?controller=Empleado&action=guardar" method="POST" enctype="multipart/form-data">
-        <label>Nombre:</label><br>
-        <input type="text" name="nombre" required><br><br>
+        <label>Nombre:</label>
+        <input type="text" name="nombre" required>
 
-        <label>Apellido:</label><br>
-        <input type="text" name="apellido" required><br><br>
+        <label>Apellido:</label>
+        <input type="text" name="apellido" required>
 
-        <label>Fecha de nacimiento:</label><br>
-        <input type="date" name="fecha_nacimiento" required><br><br>
+        <label>Fecha de nacimiento:</label>
+        <input type="date" name="fecha_nacimiento" required>
 
-        <label>Departamento:</label><br>
+        <label>Departamento:</label>
         <select name="departamento_id" required>
             <option value="">-- Seleccione un departamento --</option>
             <?php foreach ($departamentos as $dep): ?>
@@ -36,27 +39,29 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
                     <?= htmlspecialchars($dep['nombre']) ?>
                 </option>
             <?php endforeach; ?>
-        </select><br><br>
+        </select>
 
-        <label>Foto:</label><br>
-        <input type="file" name="foto" accept="image/jpeg,image/png"><br><br>
+        <label>Foto:</label>
+        <input type="file" name="foto" accept="image/jpeg,image/png">
 
-        <label>Correo electrónico:</label><br>
-        <input type="email" name="correo" required><br><br>
+        <label>Correo electrónico:</label>
+        <input type="email" name="correo" required>
 
-        <label>Contraseña:</label><br>
-        <input type="password" name="contrasena" required><br><br>
+        <label>Contraseña:</label>
+        <input type="password" name="contrasena" required>
 
-        <label>Rol:</label><br>
+        <label>Rol:</label>
         <select name="rol" required>
             <option value="">-- Seleccione un rol --</option>
             <option value="Empleado">Empleado</option>
             <option value="Administrador">Administrador</option>
-        </select><br><br>
+        </select>
 
-        <button type="submit">Guardar</button>
+        <button type="submit" class="btn-dark">Guardar</button>
     </form>
-    <br>
-    <a href="../public/index.php?controller=Empleado&action=index">Volver al listado</a>
+
+    <a class="volver" href="../public/index.php?controller=Empleado&action=index">← Volver al listado</a>
+</div>
+
 </body>
 </html>

@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'Administrador') {
 <head>
     <meta charset="UTF-8" />
     <title>Lista de Empleados</title>
+    <link rel="stylesheet" href="../public/css/admin/empleados/index.css">
 </head>
 <body>
     <h1>Empleados</h1>
