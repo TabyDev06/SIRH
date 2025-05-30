@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Lista de Departamentos</title>
-    <link rel="stylesheet" href="../public/css/admin/empleados/index_departamento.css" />
+    <link rel="stylesheet" href="../public/css/admin/departamento/index_departamento.css" />
 </head>
 <body class="dark-body">
     <div class="container">

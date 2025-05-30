@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Editar Departamento</title>
-    <link rel="stylesheet" href="../public/css/admin/empleados/editar_departamento.css" />
+    <link rel="stylesheet" href="../public/css/admin/departamento/editar_departamento.css" />
 </head>
 <body class="dark-body">
     <div class="form-container dark-card">
